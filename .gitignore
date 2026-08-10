@@ -1,0 +1,22 @@
+# Environment Variables
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+downloads/
+vector_db/
+bin/
+
+# Frontend (Node.js)
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.eslintcache
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*

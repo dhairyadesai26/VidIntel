@@ -1,16 +1,17 @@
 # Environment Variables
 .env
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
+# Python (Backend)
+backend/__pycache__/
+backend/*.py[cod]
+backend/*$py.class
 .venv/
 venv/
 env/
-downloads/
-vector_db/
-bin/
+backend/downloads/
+backend/vector_db/
+backend/bin/
+backend/.env
 
 # Frontend (Node.js)
 frontend/node_modules/

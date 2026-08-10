@@ -77,7 +77,7 @@ source .venv/bin/activate
 pip install -r Requirements.txt
 ```
 
-Create a `.env` file in the root directory and add your Mistral API key:
+Create a `.env` file in the `backend/` directory and add your Mistral API key:
 ```env
 MISTRAL_API_KEY="your_mistral_api_key_here"
 WHISPER_MODEL="small"
@@ -85,6 +85,7 @@ WHISPER_MODEL="small"
 
 Start the FastAPI server:
 ```bash
+cd backend
 uvicorn api:app --reload --port 8000
 ```
 *The API will be available at `http://localhost:8000`.*

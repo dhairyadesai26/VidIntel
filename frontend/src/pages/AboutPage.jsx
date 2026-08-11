@@ -5,10 +5,10 @@ const techStack = [
   { icon: '⚛️',  name: 'React 19',      sub: 'Frontend UI',           color: 'chip-cyan' },
   { icon: '⚡',  name: 'Vite 8',        sub: 'Build Tool',            color: 'chip-amber' },
   { icon: '🐍',  name: 'FastAPI',        sub: 'Backend API',           color: 'chip-emerald' },
-  { icon: '🎙️', name: 'Groq Whisper',    sub: 'Transcription API',         color: 'chip-indigo' },
+  { icon: '🎙️', name: 'Groq & Sarvam',   sub: 'Transcription APIs',    color: 'chip-indigo' },
   { icon: '🦜',  name: 'LangChain',     sub: 'RAG Orchestration',     color: 'chip-rose' },
-  { icon: '🗄️', name: 'FAISS',         sub: 'Vector Store',          color: 'chip-amber' },
-  { icon: '🤖',  name: 'LLM (GPT/Ollama)', sub: 'Summarization & Chat', color: 'chip-indigo' },
+  { icon: '🗄️', name: 'ChromaDB',      sub: 'Vector Store',          color: 'chip-amber' },
+  { icon: '🤖',  name: 'Mistral AI',    sub: 'Summarization & Chat',  color: 'chip-indigo' },
   { icon: '📡',  name: 'SSE Streaming', sub: 'Real-time Progress',    color: 'chip-cyan' },
 ];
 

@@ -6,10 +6,10 @@ const steps = [
     icon: <LinkIcon size={22} />,
     color: 'var(--primary)',
     bg: 'rgba(99,102,241,0.12)',
-    title: 'Paste a YouTube URL or Upload a File',
-    desc: 'Navigate to the App page and paste any YouTube link into the input box, or click "Upload File" to select a local audio/video file (MP4, MP3, WAV, M4A, and more are all supported).',
+    title: 'Paste a Video URL or Upload a File',
+    desc: 'Navigate to the App page and paste any Instagram Reel, TikTok, Twitter, or public video link into the input box, or click "Upload File" to select a local audio/video file (MP4, MP3, WAV, M4A).',
     tips: [
-      'Public YouTube URLs work best.',
+      'Public video URLs (like Instagram Reels, TikTok, Twitter) work natively.',
       'Local files up to several hours are supported.',
       'Audio-only files (podcasts, interviews) work great too.',
     ],

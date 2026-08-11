@@ -31,7 +31,7 @@ const HeroInput = ({ onSubmit, isLoading }) => {
             type="text"
             className="input-field"
             style={{ paddingLeft: '2.75rem' }}
-            placeholder="Paste YouTube URL or video link…"
+            placeholder="Paste video URL (Instagram, TikTok, Twitter)…"
             value={url}
             onChange={e => setUrl(e.target.value)}
             disabled={isLoading}
@@ -357,7 +357,7 @@ export default function AppPage() {
             <Video size={13} /> Video Intelligence
           </div>
           <h1>Analyze Your <span className="text-gradient">Video</span></h1>
-          <p>Paste a YouTube URL or upload a local audio/video file to get started.</p>
+          <p>Paste a video URL or upload a local audio/video file to get started.</p>
         </div>
 
         {/* IDLE — Input */}
@@ -365,8 +365,11 @@ export default function AppPage() {
           <div className="animate-fade-in" style={{ maxWidth: 680, margin: '0 auto' }}>
             <HeroInput onSubmit={handleProcess} isLoading={false} />
             <p style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
-              Supports YouTube, MP4, MP3, WAV, M4A, and more.
+              Supports public video URLs, MP4, MP3, WAV, M4A, and more.
             </p>
+            <div style={{ background: 'rgba(244, 63, 94, 0.1)', color: 'var(--accent-rose)', padding: '0.75rem', borderRadius: 'var(--radius-sm)', marginTop: '1rem', fontSize: '0.85rem', textAlign: 'center', border: '1px solid rgba(244, 63, 94, 0.2)' }}>
+              <strong>Note:</strong> Direct YouTube URLs do not work due to server restrictions. For YouTube, please download the video/audio locally first, then use the <strong>Upload File</strong> button.
+            </div>
           </div>
         )}
 

@@ -5,7 +5,7 @@ import { ChevronDown, HelpCircle, ArrowRight } from 'lucide-react';
 const faqs = [
   {
     q: 'What types of videos and files does VidIntel support?',
-    a: 'VidIntel supports YouTube URLs (public videos), and local file uploads including MP4, MP3, WAV, M4A, OGG, and most common audio/video formats. As long as there is speech in the video, the AI can process it.',
+    a: 'VidIntel supports public video URLs (like Instagram Reels, TikTok, Twitter), and local file uploads including MP4, MP3, WAV, M4A, OGG, and most common audio/video formats. As long as there is speech, the AI can process it.',
   },
   {
     q: 'How long does it take to process a video?',
@@ -33,7 +33,7 @@ const faqs = [
   },
   {
     q: 'Does it work for podcasts, lectures, or interviews — not just meetings?',
-    a: 'Absolutely. VidIntel works on any spoken-word content. Podcasts, online courses, YouTube tutorials, interviews, conference talks — if there\'s speech, it can be transcribed and analyzed.',
+    a: 'Absolutely. VidIntel works on any spoken-word content. Podcasts, online courses, Instagram tutorials, interviews, conference talks — if there\'s speech, it can be transcribed and analyzed.',
   },
   {
     q: 'Is there a video length limit?',

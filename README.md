@@ -18,7 +18,7 @@
 
 **VidIntel** is a full-stack, production-ready AI application that transforms long, tedious videos and meeting recordings into actionable knowledge. 
 
-Instead of re-watching hours of footage, you can simply drop a YouTube link or upload a local file. Within seconds, VidIntel will transcribe the audio, generate executive summaries, extract key decisions, compile action items, and allow you to **chat directly with your video** to retrieve precise, context-aware answers.
+Instead of re-watching hours of footage, you can simply drop a video link (like Instagram Reels, TikTok, Twitter) or upload a local file. Within seconds, VidIntel will transcribe the audio, generate executive summaries, extract key decisions, compile action items, and allow you to **chat directly with your video** to retrieve precise, context-aware answers.
 
 Designed with a sleek, responsive, glassmorphism dark-mode UI, VidIntel feels like a premium SaaS product from day one.
 
@@ -26,7 +26,7 @@ Designed with a sleek, responsive, glassmorphism dark-mode UI, VidIntel feels li
 
 ## ✨ Key Features
 
-- **📺 Universal Input**: Supports both public YouTube URLs and direct file uploads (MP4, MP3, WAV, M4A).
+- **📺 Universal Input**: Supports both public video URLs and direct file uploads (MP4, MP3, WAV, M4A).
 - **🎙️ Lightning Fast Transcription**: Uses the **Groq Whisper API** for blazing-fast English transcription and the **Sarvam AI API** for native Hinglish support.
 - **⚡ Smart Summarization**: Leverages the **Mistral AI** LLM to generate concise executive summaries.
 - **🎯 Action Item Extraction**: Automatically pulls out "Next Steps", key decisions, and open questions from meeting contexts.

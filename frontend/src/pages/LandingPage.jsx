@@ -31,7 +31,7 @@ const previewFeatures = [
 
 /* ── How it works mini-steps ── */
 const miniSteps = [
-  { num: '01', label: 'Paste a YouTube URL or upload a file' },
+  { num: '01', label: 'Paste a video URL or upload a file' },
   { num: '02', label: 'AI processes, transcribes & analyzes' },
   { num: '03', label: 'Explore insights & chat freely' },
 ];
@@ -197,7 +197,7 @@ export default function LandingPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1.5rem' }}>
             {[
               { text: '"VidIntel saved our team 3 hours of note-taking per week. The action items are spot-on every time."', name: 'Sarah K.', role: 'Product Manager' },
-              { text: '"I use it for every YouTube tutorial. Being able to chat with the video content is a game-changer for learning."', name: 'Raj P.', role: 'Software Engineer' },
+              { text: '"I use it for every online tutorial. Being able to chat with the video content is a game-changer for learning."', name: 'Raj P.', role: 'Software Engineer' },
               { text: '"Finally an AI tool that actually understands context. The summaries are accurate and the Q&A is incredible."', name: 'Emma L.', role: 'Researcher' },
             ].map((t, i) => (
               <div key={i} className="glass-panel" style={{ padding: '2rem' }}>

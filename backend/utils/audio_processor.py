@@ -9,8 +9,8 @@ os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 import imageio_ffmpeg
 FFMPEG_EXE = imageio_ffmpeg.get_ffmpeg_exe()
 
-def download_youtube_audio(url: str) -> str:
-    """Download audio from YouTube and convert to WAV format."""
+def download_web_audio(url: str) -> str:
+    """Download audio from a public URL and convert to WAV format."""
     output_path = os.path.join(DOWNLOAD_DIR, '%(title)s.%(ext)s')
     ydl_opts = {
         "format": "bestaudio/best",
@@ -25,7 +25,7 @@ def download_youtube_audio(url: str) -> str:
             raw_file = ydl.prepare_filename(info)
     except yt_dlp.utils.DownloadError as e:
         if "confirm you’re not a bot" in str(e):
-            raise Exception("YouTube blocked this server. Please download the video/audio locally and use the 'Upload File' button instead.")
+            raise Exception("Video platform blocked this server. Please download the video/audio locally and use the 'Upload File' button instead.")
         raise e
 
     # Step 2: Convert to WAV using ffmpeg directly (no ffprobe needed)
@@ -89,8 +89,8 @@ def chunk_audio(wav_path: str, chunk_minutes: int = 10) -> list:
 
 def process_input(source: str) -> list:
     if source.startswith("http://") or source.startswith("https://"):
-        print("Detected YouTube URL. Downloading audio...")
-        wav_path = download_youtube_audio(source)
+        print("Detected Web URL. Downloading audio...")
+        wav_path = download_web_audio(source)
     else:
         if not os.path.exists(source):
             raise FileNotFoundError(f"Input file not found: {source}. If you entered a URL, ensure it starts with http:// or https://")

@@ -96,7 +96,7 @@ export default function AboutPage() {
           </h2>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '0' }}>
             {[
-              { label: 'YouTube URL\nor File Upload', icon: '📥', color: 'var(--accent-cyan)' },
+              { label: 'Video URL\nor File Upload', icon: '📥', color: 'var(--accent-cyan)' },
               { label: 'Audio\nExtraction', icon: '🎙️', color: 'var(--primary)' },
               { label: 'Whisper\nTranscription', icon: '📝', color: 'var(--accent-amber)' },
               { label: 'LLM\nAnalysis', icon: '🧠', color: 'var(--secondary)' },

@@ -92,6 +92,8 @@ def process_input(source: str) -> list:
         print("Detected YouTube URL. Downloading audio...")
         wav_path = download_youtube_audio(source)
     else:
+        if not os.path.exists(source):
+            raise FileNotFoundError(f"Input file not found: {source}. If you entered a URL, ensure it starts with http:// or https://")
         print("Detected local file. Converting to WAV...")
         wav_path = convert_to_wav(source)
 

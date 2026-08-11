@@ -3,6 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import { Link, ArrowRight, Loader2, Video, FileText, CheckCircle, HelpCircle, Upload, MessageSquare, User, Sparkles } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 /* ── Sub-components ── */
 
 const HeroInput = ({ onSubmit, isLoading }) => {
@@ -165,7 +167,7 @@ const ChatInterface = () => {
     setIsTyping(true);
 
     try {
-      const res = await fetch('http://localhost:8000/api/chat', {
+      const res = await fetch(`${API_BASE_URL}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: userMessage, session_id: 'default' }),
@@ -297,7 +299,7 @@ export default function AppPage() {
     setCurrentStep('analyzing');
     setErrorMsg('');
     try {
-      const res = await fetch(`http://localhost:8000/api/analysis/${id}`);
+      const res = await fetch(`${API_BASE_URL}/api/analysis/${id}`);
       if (!res.ok) throw new Error('Analysis not found');
       const data = await res.json();
       setResultData(data.analysis);
@@ -319,7 +321,7 @@ export default function AppPage() {
       if (type === 'file') formData.append('file', payload);
       formData.append('language', 'english');
 
-      const response = await fetch('http://localhost:8000/api/process', { method: 'POST', body: formData });
+      const response = await fetch(`${API_BASE_URL}/api/process`, { method: 'POST', body: formData });
       const reader = response.body.getReader();
       const decoder = new TextDecoder('utf-8');
 

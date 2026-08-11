@@ -5,7 +5,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 
 CHROMA_DIR="vector_db"
-COLLECTION_NAME="meeting_transcripts"
+COLLECTION_NAME="meeting_transcripts_v2"
 
 def get_embeddings():
     return MistralAIEmbeddings(

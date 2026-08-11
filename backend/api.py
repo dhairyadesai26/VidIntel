@@ -13,6 +13,10 @@ os.environ["PATH"] = bin_dir + os.pathsep + os.environ.get("PATH", "")
 from dotenv import load_dotenv
 load_dotenv(override=True)
 
+# Disable Chroma telemetry which can hang on restricted server networks
+os.environ["ANONYMIZED_TELEMETRY"] = "False"
+os.environ["CHROMA_TELEMETRY"] = "false"
+
 from utils.audio_processor import process_input
 from core.transcriber import transcribe_all
 from core.summarize import summarize, generate_title
@@ -155,5 +159,7 @@ async def get_analysis(analysis_id: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 10000))
+    print(f"Starting server on port {port}...")
+    uvicorn.run("api:app", host="0.0.0.0", port=port)
 

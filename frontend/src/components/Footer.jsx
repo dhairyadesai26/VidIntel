@@ -92,7 +92,7 @@ export default function Footer() {
       <div style={{ height: '1px', background: 'var(--glass-border)', margin: '0 2rem' }} />
       <div className="footer-bottom">
         <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-          Built with <Heart size={14} style={{ color: 'var(--secondary)' }} fill="var(--secondary)" /> by VidIntel &nbsp;·&nbsp; © {new Date().getFullYear()}
+          Built with <Heart size={14} style={{ color: 'var(--secondary)' }} fill="var(--secondary)" /> by Dhairya &nbsp;·&nbsp; © {new Date().getFullYear()}
         </span>
         <div className="tech-badges">
           {techBadges.map(t => <span key={t} className="tech-badge">{t}</span>)}

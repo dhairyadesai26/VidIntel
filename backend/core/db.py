@@ -33,7 +33,7 @@ def get_cached_analysis(source: str):
     Returns the parsed document dictionary, or None if not found.
     """
     if not APPWRITE_API_KEY:
-        return None # Gracefully skip if Appwrite isn't configured
+        return None
 
     source_id = generate_source_id(source)
     try:
@@ -45,7 +45,6 @@ def get_cached_analysis(source: str):
         if response.total > 0:
             doc = response.documents[0]
             
-            # Reconstruct the result dictionary (parsing JSON strings back to lists)
             result = {
                 "title": doc.data.get("title", ""),
                 "transcript": doc.data.get("transcript", ""),
@@ -71,7 +70,6 @@ def save_analysis(source: str, result: dict):
 
     source_id = generate_source_id(source)
     try:
-        # Convert list attributes to JSON strings to fit the string attribute schema
         action_items_str = json.dumps(result.get("action_items", []))
         key_decisions_str = json.dumps(result.get("key_decisions", []))
         open_questions_str = json.dumps(result.get("open_questions", []))

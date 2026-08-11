@@ -6,10 +6,8 @@ yt-dlp>=2024.4.9                  # Download audio from YouTube URLs
 pydub>=0.25.1                     # Audio file manipulation / format conversion
 ffmpeg-python>=0.2.0              # FFmpeg bindings (FFmpeg binary must be installed separately)
 
-# ── Speech-to-Text (local Whisper) ────────────────────────────────────────────
-openai-whisper>=20231117          # OpenAI Whisper (runs locally)
-torch>=2.2.0                      # PyTorch backend for Whisper
-torchaudio>=2.2.0                 # Audio utilities for PyTorch
+# ── Speech-to-Text (Cloud APIs) ───────────────────────────────────────────────
+# We now use Groq Whisper and Sarvam APIs for STT.
 
 # ── Translation (Hindi → English) ─────────────────────────────────────────────
 deep-translator>=1.11.4           # Lightweight translation wrapper (Google backend)
@@ -46,4 +44,5 @@ requests>=2.32.0
 # ── Web Backend ───────────────────────────────────────────────────────────────
 fastapi>=0.100.0
 uvicorn>=0.23.0
-python-multipart>=0.0.6appwrite
+python-multipart>=0.0.6
+appwrite

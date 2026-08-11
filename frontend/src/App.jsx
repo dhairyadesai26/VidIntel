@@ -10,7 +10,6 @@ import FaqPage       from './pages/FaqPage';
 import AboutPage     from './pages/AboutPage';
 import HistoryPage   from './pages/HistoryPage';
 
-// Scroll to top on route change
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {

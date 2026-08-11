@@ -7,8 +7,6 @@ import asyncio
 from pydantic import BaseModel
 from typing import Optional
 
-# Import local AI pipeline functions
-
 bin_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "bin"))
 os.environ["PATH"] = bin_dir + os.pathsep + os.environ.get("PATH", "")
 
@@ -24,17 +22,15 @@ from core.db import get_cached_analysis, save_analysis, get_all_analyses, get_an
 
 app = FastAPI(title="VidIntel API")
 
-# Add CORS middleware to allow React frontend to communicate with FastAPI
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # For production, restrict this to frontend URL
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Global in-memory storage for RAG chain (since we are not using a database for now)
-# In production, use a persistent vector DB and session IDs.
+# Global in-memory storage for RAG chain
 session_store = {}
 
 @app.post("/api/process")
@@ -50,13 +46,11 @@ async def process_video(
         try:
             source = source_url
             if file:
-                # Save uploaded file temporarily
                 os.makedirs("downloads", exist_ok=True)
                 source = f"downloads/{file.filename}"
                 with open(source, "wb") as buffer:
                     buffer.write(await file.read())
 
-            # 1. Check Cache First
             yield f"data: {json.dumps({'status': 'downloading', 'message': 'Checking cache...'})}\n\n"
             await asyncio.sleep(0.1)
             cached_result = await asyncio.to_thread(get_cached_analysis, source)
@@ -73,12 +67,11 @@ async def process_video(
                 return # Exit early
 
             yield f"data: {json.dumps({'status': 'downloading', 'message': 'Processing input source...'})}\n\n"
-            await asyncio.sleep(0.1) # Yield to event loop
+            await asyncio.sleep(0.1)
             chunks = await asyncio.to_thread(process_input, source)
 
             yield f"data: {json.dumps({'status': 'transcribing', 'message': f'Transcribing {len(chunks)} chunk(s)...'})}\n\n"
             await asyncio.sleep(0.1)
-            # Transcribe all (this might block, ideally we run it in a thread pool)
             transcript = await asyncio.to_thread(transcribe_all, chunks, language)
 
             yield f"data: {json.dumps({'status': 'analyzing', 'message': 'Generating title and summary...'})}\n\n"
@@ -96,7 +89,6 @@ async def process_video(
             await asyncio.sleep(0.1)
             rag_chain = await asyncio.to_thread(build_rag_chain, transcript)
 
-            # Store the RAG chain globally for the chat endpoint (using a fixed session ID "default" for now)
             session_store["default"] = rag_chain
 
             result = {
@@ -108,7 +100,6 @@ async def process_video(
                 "open_questions": questions
             }
 
-            # Cache the result in Appwrite
             await asyncio.to_thread(save_analysis, source, result)
 
             yield f"data: {json.dumps({'status': 'complete', 'result': result})}\n\n"
@@ -132,7 +123,6 @@ async def chat_with_video(request: ChatRequest):
         raise HTTPException(status_code=400, detail="No active session found. Please process a video first.")
     
     try:
-        # Run synchronous RAG chain in thread
         answer = await asyncio.to_thread(ask_question, rag_chain, request.question)
         return {"answer": answer}
     except Exception as e:
@@ -153,10 +143,8 @@ async def get_analysis(analysis_id: str):
         if not analysis:
             raise HTTPException(status_code=404, detail="Analysis not found")
             
-        # Re-initialize RAG chain so chat works when loading from history
         if analysis.get("transcript"):
             rag_chain = await asyncio.to_thread(build_rag_chain, analysis["transcript"])
-            # Assuming 'default' session for now, ideally this would be session-specific
             session_store["default"] = rag_chain
             
         return {"analysis": analysis}

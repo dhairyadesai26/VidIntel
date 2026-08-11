@@ -1,40 +1,34 @@
-import whisper
 import os
 import requests
 from pydub import AudioSegment
 
-# Sarvam's sync STT-translate API rejects audio longer than 30s.
-# We slice each chunk into 25s pieces (with a 5s safety margin) before sending.
 SARVAM_PIECE_SECONDS = 25
 
-
-WHISPER_MODEL = os.getenv("WHISPER_MODEL", "small")
-
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 SARVAM_API_KEY = os.getenv("SARVAM_API_KEY")
 SARVAM_STT_TRANSLATE_URL = "https://api.sarvam.ai/speech-to-text-translate"
 SARVAM_MODEL = os.getenv("SARVAM_STT_MODEL", "saaras:v2.5")
 
-_model = None
-
-
-def load_model():
-
-    global _model  
-
-    if _model is None: 
-        print(f"Loading Whisper model: {WHISPER_MODEL} ...")
-        _model = whisper.load_model(WHISPER_MODEL) 
-        print("Whisper model loaded.")
-    return _model 
-
-
 def transcribe_chunk_whisper(chunk_path: str) -> str:
-
-    model = load_model()  
-
-    result = model.transcribe(chunk_path, task="transcribe")  
-    return result["text"]  
+    """Transcribe audio chunk using Groq Whisper API (fast and cloud-based)."""
+    if not GROQ_API_KEY:
+        raise RuntimeError("GROQ_API_KEY is not set in environment / .env")
+        
+    url = "https://api.groq.com/openai/v1/audio/transcriptions"
+    headers = {"Authorization": f"Bearer {GROQ_API_KEY}"}
+    
+    with open(chunk_path, "rb") as f:
+        files = {"file": (os.path.basename(chunk_path), f, "audio/wav")}
+        data = {"model": "whisper-large-v3"}
+        response = requests.post(url, headers=headers, files=files, data=data, timeout=120)
+        
+    if not response.ok:
+        print(f"\n[Error] Groq returned {response.status_code}")
+        print(f"Response body: {response.text}\n")
+        response.raise_for_status()
+        
+    return response.json().get("text", "")
 
 
 def _send_to_sarvam(piece_path: str) -> str:
@@ -107,7 +101,7 @@ def transcribe_all(chunks: list, language: str = "english") -> str:
 
     full_transcript = "" 
 
-    engine = "Sarvam AI" if language.lower() == "hinglish" else "Whisper"
+    engine = "Sarvam AI" if language.lower() == "hinglish" else "Groq Whisper API"
     print(f"Using {engine} for transcription.")
 
     for i, chunk in enumerate(chunks):  

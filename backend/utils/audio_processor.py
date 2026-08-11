@@ -16,11 +16,17 @@ def download_youtube_audio(url: str) -> str:
         "format": "bestaudio/best",
         "outtmpl": output_path,
         "quiet": True,
+        "extractor_args": {"youtube": {"player_client": ["android", "web"]}},
     }
-    # Step 1: Download raw audio (no postprocessing needed)
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url, download=True)
-        raw_file = ydl.prepare_filename(info)
+    # Step 1: Download raw audio
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=True)
+            raw_file = ydl.prepare_filename(info)
+    except yt_dlp.utils.DownloadError as e:
+        if "confirm you’re not a bot" in str(e):
+            raise Exception("YouTube blocked this server. Please download the video/audio locally and use the 'Upload File' button instead.")
+        raise e
 
     # Step 2: Convert to WAV using ffmpeg directly (no ffprobe needed)
     wav_file = os.path.splitext(raw_file)[0] + ".wav"

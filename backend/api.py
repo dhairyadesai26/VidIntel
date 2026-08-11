@@ -7,8 +7,7 @@ import asyncio
 from pydantic import BaseModel
 from typing import Optional
 
-bin_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "bin"))
-os.environ["PATH"] = bin_dir + os.pathsep + os.environ.get("PATH", "")
+# Local bin folder loading removed (using imageio-ffmpeg instead)
 
 from dotenv import load_dotenv
 load_dotenv(override=True)

@@ -6,8 +6,8 @@ import os
 DOWNLOAD_DIR = 'downloads'
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
-# Path to ffmpeg binary in project bin directory
-FFMPEG_EXE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'bin', 'ffmpeg.exe')
+import imageio_ffmpeg
+FFMPEG_EXE = imageio_ffmpeg.get_ffmpeg_exe()
 
 def download_youtube_audio(url: str) -> str:
     """Download audio from YouTube and convert to WAV format."""

@@ -89,7 +89,7 @@ def transcribe_chunk_sarvam(chunk_path: str) -> str:
 def transcribe_chunk(chunk_path: str, language: str = "english") -> str:
     """
     Route one chunk to Whisper or Sarvam depending on language choice.
-    - english  → Whisper (local model)
+    - english  → Groq Whisper API
     - hinglish → Sarvam (translates to English while transcribing)
     """
     if language.lower() == "hinglish":

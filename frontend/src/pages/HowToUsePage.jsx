@@ -19,7 +19,7 @@ const steps = [
     color: 'var(--accent-cyan)',
     bg: 'rgba(6,182,212,0.12)',
     title: 'AI Processes Your Video',
-    desc: 'Hit "Analyze" and watch the real-time progress tracker. Our pipeline downloads (if needed), splits into chunks, transcribes using Whisper AI, then sends the transcript through LLM analysis.',
+    desc: 'Hit "Analyze" and watch the real-time progress tracker. Our pipeline downloads (if needed), splits into chunks, transcribes using Groq Whisper API, then sends the transcript through LLM analysis.',
     tips: [
       'Average 1–2 minutes for a 1-hour video.',
       'You can see each stage: downloading, transcribing, analyzing, extracting, indexing.',

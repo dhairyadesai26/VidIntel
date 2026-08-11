@@ -1,4 +1,5 @@
 import os
+
 from langchain_chroma import Chroma
 from langchain_mistralai import MistralAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter

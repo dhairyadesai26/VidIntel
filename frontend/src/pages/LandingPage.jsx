@@ -11,7 +11,7 @@ const previewFeatures = [
     color: 'var(--accent-amber)',
     bg: 'rgba(245,158,11,0.12)',
     title: 'Instant Transcription',
-    desc: 'Whisper-powered transcription in 50+ languages with speaker diarization.',
+    desc: 'Groq Whisper-powered transcription for English, and Sarvam AI for native Hinglish support.',
   },
   {
     icon: <Brain size={22} />,
@@ -53,7 +53,7 @@ export default function LandingPage() {
         <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div className="hero-badge animate-fade-in">
             <Sparkles size={14} />
-            Powered by Whisper AI &amp; LangChain RAG
+            Powered by Groq Whisper, Sarvam AI &amp; LangChain RAG
           </div>
 
           <h1 className="animate-fade-in-d1">

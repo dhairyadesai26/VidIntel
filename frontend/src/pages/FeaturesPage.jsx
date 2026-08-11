@@ -9,8 +9,8 @@ const features = [
     icon: <Mic size={24} />,
     color: 'var(--primary-hover)',
     bg: 'rgba(99,102,241,0.12)',
-    title: 'Whisper Transcription',
-    desc: 'Industry-leading accuracy with OpenAI Whisper. Handles accents, background noise, and multiple speakers with ease.',
+    title: 'Groq Whisper & Sarvam AI',
+    desc: 'Industry-leading accuracy with Groq Whisper API for English, and Sarvam AI specifically optimized for flawless Hinglish transcription.',
     chip: { label: 'AI Powered', cls: 'chip-indigo' },
   },
   {

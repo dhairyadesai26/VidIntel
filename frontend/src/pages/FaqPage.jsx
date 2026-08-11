@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     q: 'What languages are supported for transcription?',
-    a: 'Whisper AI supports over 50 languages including English, Spanish, French, German, Hindi, Mandarin, Japanese, Arabic, and many more. The system auto-detects the language or you can specify it manually.',
+    a: 'Groq Whisper API supports over 50 languages. Additionally, we have integrated Sarvam AI specifically for highly accurate Hinglish (Hindi + English) transcription. You can select your preferred language when processing.',
   },
   {
     q: 'How does the "Chat with Video" feature work?',
@@ -29,7 +29,7 @@ const faqs = [
   },
   {
     q: 'What AI models does VidIntel use?',
-    a: 'The transcription engine uses OpenAI\'s Whisper model. Summarization, extraction, and chat are powered by an LLM (configurable in the backend — supports OpenAI GPT, local models via Ollama, etc.). The vector store uses LangChain with FAISS.',
+    a: 'The transcription engine uses Groq Whisper API (for English) and Sarvam AI (for Hinglish). Summarization, extraction, and chat are powered by Mistral AI. The vector store uses LangChain with ChromaDB.',
   },
   {
     q: 'Does it work for podcasts, lectures, or interviews — not just meetings?',

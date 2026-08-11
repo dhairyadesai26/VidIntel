@@ -16,12 +16,13 @@ const footerLinks = {
   Tech: [
     { label: 'FastAPI',      href: 'https://fastapi.tiangolo.com' },
     { label: 'React',        href: 'https://react.dev' },
-    { label: 'Whisper',      href: 'https://openai.com/research/whisper' },
+    { label: 'Groq Whisper',      href: 'https://groq.com' },
+    { label: 'Sarvam AI',         href: 'https://www.sarvam.ai' },
     { label: 'LangChain',    href: 'https://langchain.com' },
   ],
 };
 
-const techBadges = ['React', 'FastAPI', 'Whisper AI', 'LangChain', 'Vite'];
+const techBadges = ['React', 'FastAPI', 'Groq & Sarvam', 'LangChain', 'Vite'];
 
 export default function Footer() {
   return (

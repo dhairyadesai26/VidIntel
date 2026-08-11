@@ -5,7 +5,7 @@ const techStack = [
   { icon: '⚛️',  name: 'React 19',      sub: 'Frontend UI',           color: 'chip-cyan' },
   { icon: '⚡',  name: 'Vite 8',        sub: 'Build Tool',            color: 'chip-amber' },
   { icon: '🐍',  name: 'FastAPI',        sub: 'Backend API',           color: 'chip-emerald' },
-  { icon: '🎙️', name: 'Whisper AI',    sub: 'Transcription',         color: 'chip-indigo' },
+  { icon: '🎙️', name: 'Groq Whisper',    sub: 'Transcription API',         color: 'chip-indigo' },
   { icon: '🦜',  name: 'LangChain',     sub: 'RAG Orchestration',     color: 'chip-rose' },
   { icon: '🗄️', name: 'FAISS',         sub: 'Vector Store',          color: 'chip-amber' },
   { icon: '🤖',  name: 'LLM (GPT/Ollama)', sub: 'Summarization & Chat', color: 'chip-indigo' },
@@ -40,7 +40,7 @@ export default function AboutPage() {
             We built VidIntel to give everyone — from solo creators to enterprise teams — a way to instantly extract the value buried inside any video. No more rewatching. No more lost action items. No more "What did they decide again?"
           </p>
           <p style={{ fontSize: '1rem', color: 'var(--text-muted)', lineHeight: 1.8, marginTop: '1.5rem' }}>
-            The entire system is powered by open-source AI: Whisper for transcription, LangChain for RAG, and FAISS for vector search. Fast, accurate, and self-hostable.
+            The entire system is powered by cutting edge AI: Groq Whisper & Sarvam AI for transcription, LangChain for RAG, and ChromaDB for vector search. Fast, accurate, and scalable.
           </p>
         </div>
 
@@ -98,7 +98,7 @@ export default function AboutPage() {
             {[
               { label: 'Video URL\nor File Upload', icon: '📥', color: 'var(--accent-cyan)' },
               { label: 'Audio\nExtraction', icon: '🎙️', color: 'var(--primary)' },
-              { label: 'Whisper\nTranscription', icon: '📝', color: 'var(--accent-amber)' },
+              { label: 'Groq & Sarvam\nTranscription', icon: '📝', color: 'var(--accent-amber)' },
               { label: 'LLM\nAnalysis', icon: '🧠', color: 'var(--secondary)' },
               { label: 'Vector\nIndexing', icon: '🗄️', color: 'var(--accent-emerald)' },
               { label: 'RAG\nChat', icon: '💬', color: 'var(--primary-hover)' },

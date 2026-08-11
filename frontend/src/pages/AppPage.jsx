@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Link, ArrowRight, Loader2, Video, FileText, CheckCircle, HelpCircle, Upload, MessageSquare, User, Sparkles } from 'lucide-react';
+import { Link, ArrowRight, Loader2, Video, FileText, CheckCircle, HelpCircle, Upload, MessageSquare, User, Sparkles, AlignLeft } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -136,6 +136,15 @@ const Dashboard = ({ data }) => {
             <Card title="Open Questions" icon={<HelpCircle size={22} />}>{data.open_questions}</Card>
           </div>
         </div>
+
+        {/* Full width Transcript */}
+        {data.transcript && (
+          <div className="animate-fade-in-d5" style={{ height: '400px' }}>
+            <Card title="Full Transcript" icon={<AlignLeft size={22} />}>
+              {data.transcript}
+            </Card>
+          </div>
+        )}
       </div>
     </div>
   );

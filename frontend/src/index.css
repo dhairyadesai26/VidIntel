@@ -16,11 +16,16 @@
   --primary: #6366f1;
   --primary-dark: #4f46e5;
   --primary-hover: #818cf8;
-  --primary-glow: rgba(99, 102, 241, 0.4);
-  --primary-glow-strong: rgba(99, 102, 241, 0.6);
+  --primary-glow: rgba(99, 102, 241, 0.5);
+  --primary-glow-strong: rgba(99, 102, 241, 0.8);
 
   --secondary: #ec4899;
-  --secondary-glow: rgba(236, 72, 153, 0.4);
+  --secondary-glow: rgba(236, 72, 153, 0.5);
+  --secondary-glow-strong: rgba(236, 72, 153, 0.8);
+
+  --chat-ai-bg: rgba(255, 255, 255, 0.05);
+  --chat-ai-border: rgba(255, 255, 255, 0.1);
+  --chat-user-bg: linear-gradient(135deg, var(--primary), var(--primary-dark));
 
   --accent-cyan: #06b6d4;
   --accent-emerald: #10b981;
@@ -154,9 +159,51 @@ img { max-width: 100%; display: block; }
 }
 .glass-hover:hover {
   background: var(--glass-bg-hover);
-  border-color: rgba(99, 102, 241, 0.3);
+  border-color: rgba(99, 102, 241, 0.4);
   transform: translateY(-4px);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 0 20px var(--primary-glow);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 25px var(--primary-glow);
+}
+
+/* ─────────────────────────────────────────
+   MARKDOWN CONTENT
+───────────────────────────────────────── */
+.markdown-content {
+  line-height: 1.7;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.markdown-content p {
+  margin-bottom: 1rem;
+}
+.markdown-content p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-content strong {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.markdown-content ul, .markdown-content ol {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-content li {
+  margin-bottom: 0.5rem;
+}
+.markdown-content li::marker {
+  color: var(--primary);
+}
+
+.markdown-content h1, 
+.markdown-content h2, 
+.markdown-content h3 {
+  color: var(--text-main);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-family: 'Outfit', sans-serif;
 }
 
 /* ─────────────────────────────────────────
@@ -353,6 +400,11 @@ img { max-width: 100%; display: block; }
   100% { background-position: 200% center; }
 }
 
+@keyframes messagePop {
+  0% { opacity: 0; transform: translateY(10px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .animate-fade-in    { animation: fadeInUp 0.7s var(--transition-smooth) forwards; }
 .animate-fade-in-d1 { animation: fadeInUp 0.7s 0.1s var(--transition-smooth) both; }
 .animate-fade-in-d2 { animation: fadeInUp 0.7s 0.2s var(--transition-smooth) both; }
@@ -360,7 +412,70 @@ img { max-width: 100%; display: block; }
 .animate-fade-in-d4 { animation: fadeInUp 0.7s 0.4s var(--transition-smooth) both; }
 .animate-fade-in-d5 { animation: fadeInUp 0.7s 0.5s var(--transition-smooth) both; }
 .animate-float      { animation: float 4s ease-in-out infinite; }
+.animate-message    { animation: messagePop 0.4s var(--transition-bounce) both; }
 .spinner            { animation: spin 1s linear infinite; }
+
+/* ─────────────────────────────────────────
+   CHAT INTERFACE
+───────────────────────────────────────── */
+.chat-message {
+  display: flex;
+  gap: 1rem;
+  max-width: 85%;
+}
+
+.chat-message.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.chat-message.ai {
+  align-self: flex-start;
+}
+
+.chat-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.chat-avatar.user {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+}
+
+.chat-avatar.ai {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.chat-bubble {
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.chat-message.user .chat-bubble {
+  background: var(--chat-user-bg);
+  color: white;
+  border-top-right-radius: 4px;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+}
+
+.chat-message.ai .chat-bubble {
+  background: var(--chat-ai-bg);
+  border: 1px solid var(--chat-ai-border);
+  border-top-left-radius: 4px;
+  backdrop-filter: blur(12px);
+  color: var(--text-main);
+}
 
 /* ─────────────────────────────────────────
    NAVBAR

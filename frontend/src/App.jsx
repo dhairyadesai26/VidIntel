@@ -8,6 +8,7 @@ import FeaturesPage  from './pages/FeaturesPage';
 import HowToUsePage  from './pages/HowToUsePage';
 import FaqPage       from './pages/FaqPage';
 import AboutPage     from './pages/AboutPage';
+import HistoryPage   from './pages/HistoryPage';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -30,6 +31,7 @@ function Layout() {
         <Route path="/how-to-use" element={<HowToUsePage />} />
         <Route path="/faq"        element={<FaqPage />}      />
         <Route path="/about"      element={<AboutPage />}    />
+        <Route path="/history"    element={<HistoryPage />}  />
       </Routes>
       <Footer />
     </>

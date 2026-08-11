@@ -20,6 +20,7 @@ from core.transcriber import transcribe_all
 from core.summarize import summarize, generate_title
 from core.extractor import extract_action_items, extract_key_decisions, extract_questions
 from core.rag_engine import build_rag_chain, ask_question
+from core.db import get_cached_analysis, save_analysis, get_all_analyses, get_analysis_by_id
 
 app = FastAPI(title="VidIntel API")
 
@@ -54,6 +55,22 @@ async def process_video(
                 source = f"downloads/{file.filename}"
                 with open(source, "wb") as buffer:
                     buffer.write(await file.read())
+
+            # 1. Check Cache First
+            yield f"data: {json.dumps({'status': 'downloading', 'message': 'Checking cache...'})}\n\n"
+            await asyncio.sleep(0.1)
+            cached_result = await asyncio.to_thread(get_cached_analysis, source)
+            
+            if cached_result:
+                yield f"data: {json.dumps({'status': 'indexing', 'message': 'Found cached analysis! Rebuilding search index...'})}\n\n"
+                await asyncio.sleep(0.1)
+                
+                # Rebuild RAG index using the cached transcript
+                rag_chain = await asyncio.to_thread(build_rag_chain, cached_result["transcript"])
+                session_store["default"] = rag_chain
+                
+                yield f"data: {json.dumps({'status': 'complete', 'result': cached_result})}\n\n"
+                return # Exit early
 
             yield f"data: {json.dumps({'status': 'downloading', 'message': 'Processing input source...'})}\n\n"
             await asyncio.sleep(0.1) # Yield to event loop
@@ -91,6 +108,9 @@ async def process_video(
                 "open_questions": questions
             }
 
+            # Cache the result in Appwrite
+            await asyncio.to_thread(save_analysis, source, result)
+
             yield f"data: {json.dumps({'status': 'complete', 'result': result})}\n\n"
 
         except Exception as e:
@@ -115,6 +135,33 @@ async def chat_with_video(request: ChatRequest):
         # Run synchronous RAG chain in thread
         answer = await asyncio.to_thread(ask_question, rag_chain, request.question)
         return {"answer": answer}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/history")
+async def get_history(limit: int = 50, offset: int = 0):
+    try:
+        analyses = await asyncio.to_thread(get_all_analyses, limit, offset)
+        return {"history": analyses}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/analysis/{analysis_id}")
+async def get_analysis(analysis_id: str):
+    try:
+        analysis = await asyncio.to_thread(get_analysis_by_id, analysis_id)
+        if not analysis:
+            raise HTTPException(status_code=404, detail="Analysis not found")
+            
+        # Re-initialize RAG chain so chat works when loading from history
+        if analysis.get("transcript"):
+            rag_chain = await asyncio.to_thread(build_rag_chain, analysis["transcript"])
+            # Assuming 'default' session for now, ideally this would be session-specific
+            session_store["default"] = rag_chain
+            
+        return {"analysis": analysis}
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

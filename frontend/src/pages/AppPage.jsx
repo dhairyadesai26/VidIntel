@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, ArrowRight, Loader2, Video, FileText, CheckCircle, HelpCircle, Upload, MessageSquare } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { Link, ArrowRight, Loader2, Video, FileText, CheckCircle, HelpCircle, Upload, MessageSquare, User, Sparkles } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 /* ── Sub-components ── */
 
@@ -94,49 +96,70 @@ const ProgressView = ({ status, message }) => {
 const Dashboard = ({ data }) => {
   if (!data) return null;
 
-  const Card = ({ title, icon, children }) => (
-    <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', height: '100%' }}>
+  const Card = ({ title, icon, children, className = '' }) => (
+    <div className={`glass-panel glass-hover ${className}`} style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column', gap: '1.25rem', height: '100%' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '1rem' }}>
-        <div style={{ background: 'rgba(99,102,241,0.1)', padding: '0.5rem', borderRadius: 'var(--radius-sm)', color: 'var(--primary)' }}>
+        <div style={{ background: 'rgba(99,102,241,0.1)', padding: '0.6rem', borderRadius: 'var(--radius-sm)', color: 'var(--primary)', boxShadow: '0 0 10px rgba(99,102,241,0.1)' }}>
           {icon}
         </div>
-        <h3 style={{ margin: 0, fontSize: '1rem' }}>{title}</h3>
+        <h3 style={{ margin: 0, fontSize: '1.1rem', fontFamily: 'Outfit, sans-serif' }}>{title}</h3>
       </div>
-      <div style={{ color: 'var(--text-muted)', whiteSpace: 'pre-wrap', flex: 1, overflowY: 'auto', fontSize: '0.9rem', lineHeight: 1.7 }}>
-        {children}
+      <div className="markdown-content" style={{ flex: 1, overflowY: 'auto' }}>
+        <ReactMarkdown>{children}</ReactMarkdown>
       </div>
     </div>
   );
 
   return (
-    <div className="animate-fade-in" style={{ marginTop: '2rem' }}>
-      <h2 style={{ fontSize: '1.75rem', marginBottom: '1.75rem', textAlign: 'center' }}>{data.title}</h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
-        <Card title="Summary"        icon={<FileText size={20} />}>{data.summary}</Card>
-        <Card title="Action Items"   icon={<CheckCircle size={20} />}>{data.action_items}</Card>
-        <Card title="Key Decisions"  icon={<Video size={20} />}>{data.key_decisions}</Card>
-        <Card title="Open Questions" icon={<HelpCircle size={20} />}>{data.open_questions}</Card>
+    <div className="animate-fade-in" style={{ marginTop: '3rem', marginBottom: '3rem' }}>
+      <h2 style={{ fontSize: '2rem', marginBottom: '2rem', textAlign: 'center', fontWeight: '800' }}>
+        <span className="text-gradient">{data.title || 'Video Analysis Complete'}</span>
+      </h2>
+      
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        {/* Full width Summary */}
+        <Card title="Summary" icon={<FileText size={22} />} className="animate-fade-in-d1">
+          {data.summary}
+        </Card>
+        
+        {/* 3-Column Grid for the rest */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+          <div className="animate-fade-in-d2" style={{ height: '100%' }}>
+            <Card title="Action Items" icon={<CheckCircle size={22} />}>{data.action_items}</Card>
+          </div>
+          <div className="animate-fade-in-d3" style={{ height: '100%' }}>
+            <Card title="Key Decisions" icon={<Video size={22} />}>{data.key_decisions}</Card>
+          </div>
+          <div className="animate-fade-in-d4" style={{ height: '100%' }}>
+            <Card title="Open Questions" icon={<HelpCircle size={22} />}>{data.open_questions}</Card>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 const ChatInterface = () => {
-  const [messages, setMessages] = useState([
-    { role: 'assistant', content: '👋 Hey! I\'ve analyzed the video. Ask me anything about its content, action items, or specific moments.' }
-  ]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const endRef = useRef(null);
+
+  const suggestedQuestions = [
+    "What are the main takeaways?",
+    "Can you summarize the action items?",
+    "What decisions were made?",
+    "Were there any unresolved questions?"
+  ];
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  const handleSend = async (e) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-    const userMessage = input.trim();
+  const handleSend = async (text) => {
+    const userMessage = text.trim();
+    if (!userMessage) return;
+    
     setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     setInput('');
     setIsTyping(true);
@@ -156,63 +179,95 @@ const ChatInterface = () => {
     }
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    handleSend(input);
+  };
+
   return (
-    <div className="glass-panel animate-fade-in" style={{ display: 'flex', flexDirection: 'column', height: 560, marginTop: '1.5rem' }}>
+    <div className="glass-panel animate-fade-in-d5" style={{ display: 'flex', flexDirection: 'column', height: 600, marginTop: '2rem', overflow: 'hidden' }}>
       {/* Header */}
-      <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <div style={{ width: 9, height: 9, background: 'var(--accent-emerald)', borderRadius: '50%', boxShadow: '0 0 8px var(--accent-emerald)' }} />
-        <MessageSquare size={16} style={{ color: 'var(--primary)' }} />
-        <h3 style={{ margin: 0, fontSize: '0.9375rem' }}>Chat with Video</h3>
+      <div style={{ padding: '1.25rem 1.75rem', borderBottom: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', gap: '0.875rem', background: 'rgba(255,255,255,0.02)' }}>
+        <div style={{ width: 10, height: 10, background: 'var(--accent-emerald)', borderRadius: '50%', boxShadow: '0 0 10px var(--accent-emerald)' }} />
+        <MessageSquare size={18} style={{ color: 'var(--primary)' }} />
+        <div>
+          <h3 style={{ margin: 0, fontSize: '1rem', fontFamily: 'Outfit, sans-serif' }}>AI Video Assistant</h3>
+          <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>Ask anything about the video content</p>
+        </div>
       </div>
 
-      {/* Messages */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
-        {messages.map((msg, i) => (
-          <div key={i} style={{
-            alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-            background: msg.role === 'user' ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
-            border: msg.role === 'user' ? 'none' : '1px solid var(--glass-border)',
-            padding: '0.875rem 1rem',
-            borderRadius: 'var(--radius-md)',
-            borderBottomRightRadius: msg.role === 'user' ? 4 : 'var(--radius-md)',
-            borderBottomLeftRadius: msg.role === 'assistant' ? 4 : 'var(--radius-md)',
-            maxWidth: '80%',
-            fontSize: '0.9rem',
-          }}>
-            <p style={{ margin: 0, whiteSpace: 'pre-wrap', lineHeight: 1.65 }}>{msg.content}</p>
+      {/* Messages Area */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        {messages.length === 0 ? (
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem' }}>
+            <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(99,102,241,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', marginBottom: '1rem' }}>
+              <Sparkles size={32} />
+            </div>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', textAlign: 'center' }}>How can I help you understand this video better?</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'center', maxWidth: 500 }}>
+              {suggestedQuestions.map((q, i) => (
+                <button
+                  key={i}
+                  className="glass-hover"
+                  style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', padding: '0.75rem 1rem', borderRadius: 'var(--radius-full)', color: 'var(--text-main)', fontSize: '0.875rem', cursor: 'pointer' }}
+                  onClick={() => handleSend(q)}
+                >
+                  {q}
+                </button>
+              ))}
+            </div>
           </div>
-        ))}
+        ) : (
+          messages.map((msg, i) => (
+            <div key={i} className={`chat-message ${msg.role === 'user' ? 'user' : 'ai'} animate-message`} style={{ animationDelay: `${i === messages.length - 1 ? 0 : 0}ms` }}>
+              <div className={`chat-avatar ${msg.role === 'user' ? 'user' : 'ai'}`}>
+                {msg.role === 'user' ? <User size={18} /> : <Sparkles size={18} />}
+              </div>
+              <div className="chat-bubble markdown-content">
+                <ReactMarkdown>{msg.content}</ReactMarkdown>
+              </div>
+            </div>
+          ))
+        )}
+        
         {isTyping && (
-          <div style={{ alignSelf: 'flex-start', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', padding: '0.875rem 1rem', borderRadius: 'var(--radius-md)', display: 'flex', gap: '6px', alignItems: 'center' }}>
-            {[0,1,2].map(i => (
-              <span key={i} style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--text-muted)', display: 'inline-block', animation: `float 1s ${i*0.2}s ease-in-out infinite` }} />
-            ))}
+          <div className="chat-message ai animate-message">
+             <div className="chat-avatar ai">
+                <Sparkles size={18} />
+             </div>
+             <div className="chat-bubble" style={{ display: 'flex', gap: '6px', alignItems: 'center', padding: '1.25rem 1.5rem' }}>
+              {[0,1,2].map(i => (
+                <span key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--text-main)', display: 'inline-block', animation: `float 1s ${i*0.2}s ease-in-out infinite` }} />
+              ))}
+            </div>
           </div>
         )}
         <div ref={endRef} />
       </div>
 
-      {/* Input */}
-      <div style={{ padding: '1rem', borderTop: '1px solid var(--glass-border)' }}>
-        <form onSubmit={handleSend} style={{ display: 'flex', gap: '0.5rem' }}>
-          <input
-            id="chat-input"
-            type="text"
-            className="input-field"
-            placeholder="Ask anything about the video…"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            disabled={isTyping}
-            style={{ borderRadius: 'var(--radius-full)' }}
-          />
+      {/* Input Area */}
+      <div style={{ padding: '1.25rem', borderTop: '1px solid var(--glass-border)', background: 'rgba(2, 6, 23, 0.5)' }}>
+        <form onSubmit={handleFormSubmit} style={{ display: 'flex', gap: '0.75rem' }}>
+          <div style={{ position: 'relative', flex: 1 }}>
+            <input
+              id="chat-input"
+              type="text"
+              className="input-field"
+              placeholder="Ask a question about the video..."
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              disabled={isTyping}
+              style={{ borderRadius: 'var(--radius-full)', padding: '1rem 1.5rem', background: 'var(--bg-base)', border: '1px solid var(--glass-border)', fontSize: '0.95rem' }}
+            />
+          </div>
           <button
             id="chat-send-btn"
             type="submit"
             className="btn-primary"
-            style={{ borderRadius: 'var(--radius-full)', padding: '0 1.25rem', flexShrink: 0 }}
+            style={{ borderRadius: 'var(--radius-full)', padding: '0 1.5rem', flexShrink: 0, boxShadow: '0 0 20px var(--primary-glow)' }}
             disabled={isTyping || !input.trim()}
           >
-            Send
+            <ArrowRight size={20} />
           </button>
         </form>
       </div>
@@ -222,11 +277,36 @@ const ChatInterface = () => {
 
 /* ── Main AppPage ── */
 export default function AppPage() {
+  const [searchParams] = useSearchParams();
   const [appState, setAppState] = useState('idle'); // idle | processing | complete | error
   const [progressMsg, setProgressMsg] = useState('');
   const [currentStep, setCurrentStep] = useState('');
   const [resultData, setResultData] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
+
+  useEffect(() => {
+    const id = searchParams.get('id');
+    if (id) {
+      loadHistoryItem(id);
+    }
+  }, [searchParams]);
+
+  const loadHistoryItem = async (id) => {
+    setAppState('processing');
+    setProgressMsg('Loading past analysis...');
+    setCurrentStep('analyzing');
+    setErrorMsg('');
+    try {
+      const res = await fetch(`http://localhost:8000/api/analysis/${id}`);
+      if (!res.ok) throw new Error('Analysis not found');
+      const data = await res.json();
+      setResultData(data.analysis);
+      setAppState('complete');
+    } catch (err) {
+      setAppState('error');
+      setErrorMsg(err.message);
+    }
+  };
 
   const handleProcess = async ({ type, payload }) => {
     setAppState('processing');
